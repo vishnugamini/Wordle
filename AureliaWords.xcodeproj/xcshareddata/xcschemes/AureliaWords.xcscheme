@@ -21,6 +21,20 @@
                ReferencedContainer = "container:AureliaWords.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AA0000010000000000000042"
+               BuildableName = "AureliaWordsUITests.xctest"
+               BlueprintName = "AureliaWordsUITests"
+               ReferencedContainer = "container:AureliaWords.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -38,6 +52,17 @@
                BlueprintIdentifier = "AA0000010000000000000041"
                BuildableName = "AureliaWordsTests.xctest"
                BlueprintName = "AureliaWordsTests"
+               ReferencedContainer = "container:AureliaWords.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AA0000010000000000000042"
+               BuildableName = "AureliaWordsUITests.xctest"
+               BlueprintName = "AureliaWordsUITests"
                ReferencedContainer = "container:AureliaWords.xcodeproj">
             </BuildableReference>
          </TestableReference>

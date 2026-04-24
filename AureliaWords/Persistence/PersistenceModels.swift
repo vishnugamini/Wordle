@@ -43,11 +43,19 @@ final class StoredSettings {
     var hapticsEnabled: Bool
     var colorBlindMode: Bool
     var reduceMotion: Bool
+    var hasSeenHowToPlay: Bool
 
-    init(id: String = "settings", hapticsEnabled: Bool = true, colorBlindMode: Bool = false, reduceMotion: Bool = false) {
+    init(
+        id: String = "settings",
+        hapticsEnabled: Bool = true,
+        colorBlindMode: Bool = false,
+        reduceMotion: Bool = false,
+        hasSeenHowToPlay: Bool = false
+    ) {
         self.id = id
         self.hapticsEnabled = hapticsEnabled
         self.colorBlindMode = colorBlindMode
         self.reduceMotion = reduceMotion
+        self.hasSeenHowToPlay = hasSeenHowToPlay
     }
 }

@@ -6,10 +6,17 @@ enum AureliaTheme {
     static let parchment = Color(red: 0.94, green: 0.86, blue: 0.72)
     static let champagne = Color(red: 0.92, green: 0.72, blue: 0.43)
     static let bronze = Color(red: 0.56, green: 0.36, blue: 0.18)
+    static let apricot = Color(red: 0.92, green: 0.56, blue: 0.24)
+    static let copper = Color(red: 0.72, green: 0.34, blue: 0.10)
     static let ruby = Color(red: 0.64, green: 0.15, blue: 0.18)
     static let emerald = Color(red: 0.14, green: 0.50, blue: 0.34)
+    static let mint = Color(red: 0.31, green: 0.72, blue: 0.52)
+    static let sky = Color(red: 0.36, green: 0.70, blue: 0.96)
+    static let cobalt = Color(red: 0.14, green: 0.42, blue: 0.86)
     static let slate = Color(red: 0.29, green: 0.31, blue: 0.32)
+    static let charcoal = Color(red: 0.15, green: 0.14, blue: 0.13)
     static let panel = Color.white.opacity(0.08)
+    static let panelDeep = Color(red: 0.16, green: 0.145, blue: 0.13)
 
     static let background = LinearGradient(
         colors: [Color(red: 0.03, green: 0.028, blue: 0.025), Color(red: 0.12, green: 0.095, blue: 0.07), Color(red: 0.04, green: 0.035, blue: 0.03)],

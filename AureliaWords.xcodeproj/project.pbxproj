@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		AA0000010000000000000001 /* AureliaWordsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000101 /* AureliaWordsApp.swift */; };
 		AA0000010000000000000002 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000102 /* AppView.swift */; };
+		AA000001000000000000000F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000010F /* HomeView.swift */; };
+		AA0000010000000000000012 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000110 /* SettingsView.swift */; };
+		AA0000010000000000000013 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000111 /* HowToPlayView.swift */; };
+		AA0000010000000000000014 /* AboutSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000112 /* AboutSupportView.swift */; };
+		AA0000010000000000000015 /* AppMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000113 /* AppMetadata.swift */; };
+		AA0000010000000000000016 /* AppSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000114 /* AppSettingsStore.swift */; };
+		AA0000010000000000000017 /* AureliaWordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000115 /* AureliaWordsUITests.swift */; };
 		AA0000010000000000000003 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000103 /* Theme.swift */; };
 		AA0000010000000000000004 /* GameModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000104 /* GameModels.swift */; };
 		AA0000010000000000000005 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000105 /* GameEngine.swift */; };
@@ -31,11 +38,25 @@
 			remoteGlobalIDString = AA0000010000000000000040;
 			remoteInfo = AureliaWords;
 		};
+		AA0000010000000000000018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA0000010000000000000020 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA0000010000000000000040;
+			remoteInfo = AureliaWords;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		AA0000010000000000000101 /* AureliaWordsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureliaWordsApp.swift; sourceTree = "<group>"; };
 		AA0000010000000000000102 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		AA000001000000000000010F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		AA0000010000000000000110 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AA0000010000000000000111 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
+		AA0000010000000000000112 /* AboutSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSupportView.swift; sourceTree = "<group>"; };
+		AA0000010000000000000113 /* AppMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMetadata.swift; sourceTree = "<group>"; };
+		AA0000010000000000000114 /* AppSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsStore.swift; sourceTree = "<group>"; };
+		AA0000010000000000000115 /* AureliaWordsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureliaWordsUITests.swift; sourceTree = "<group>"; };
 		AA0000010000000000000103 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		AA0000010000000000000104 /* GameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModels.swift; sourceTree = "<group>"; };
 		AA0000010000000000000105 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
@@ -50,6 +71,7 @@
 		AA000001000000000000010E /* GameEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngineTests.swift; sourceTree = "<group>"; };
 		AA0000010000000000000201 /* AureliaWords.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AureliaWords.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0000010000000000000202 /* AureliaWordsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AureliaWordsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0000010000000000000203 /* AureliaWordsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AureliaWordsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +89,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0000010000000000000036 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -75,6 +104,7 @@
 			children = (
 				AA0000010000000000000050 /* AureliaWords */,
 				AA0000010000000000000058 /* AureliaWordsTests */,
+				AA0000010000000000000059 /* AureliaWordsUITests */,
 				AA0000010000000000000060 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,6 +128,11 @@
 			isa = PBXGroup;
 			children = (
 				AA0000010000000000000102 /* AppView.swift */,
+				AA000001000000000000010F /* HomeView.swift */,
+				AA0000010000000000000110 /* SettingsView.swift */,
+				AA0000010000000000000111 /* HowToPlayView.swift */,
+				AA0000010000000000000112 /* AboutSupportView.swift */,
+				AA0000010000000000000113 /* AppMetadata.swift */,
 			);
 			path = AppShell;
 			sourceTree = "<group>";
@@ -126,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0000010000000000000109 /* PersistenceModels.swift */,
+				AA0000010000000000000114 /* AppSettingsStore.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -155,11 +191,20 @@
 			path = AureliaWordsTests;
 			sourceTree = "<group>";
 		};
+		AA0000010000000000000059 /* AureliaWordsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000010000000000000115 /* AureliaWordsUITests.swift */,
+			);
+			path = AureliaWordsUITests;
+			sourceTree = "<group>";
+		};
 		AA0000010000000000000060 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				AA0000010000000000000201 /* AureliaWords.app */,
 				AA0000010000000000000202 /* AureliaWordsTests.xctest */,
+				AA0000010000000000000203 /* AureliaWordsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,6 +247,24 @@
 			productReference = AA0000010000000000000202 /* AureliaWordsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		AA0000010000000000000042 /* AureliaWordsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA0000010000000000000082 /* Build configuration list for PBXNativeTarget "AureliaWordsUITests" */;
+			buildPhases = (
+				AA0000010000000000000037 /* Sources */,
+				AA0000010000000000000036 /* Frameworks */,
+				AA0000010000000000000038 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA0000010000000000000019 /* PBXTargetDependency */,
+			);
+			name = AureliaWordsUITests;
+			productName = AureliaWordsUITests;
+			productReference = AA0000010000000000000203 /* AureliaWordsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,6 +279,10 @@
 						CreatedOnToolsVersion = 26.4.1;
 					};
 					AA0000010000000000000041 = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = AA0000010000000000000040;
+					};
+					AA0000010000000000000042 = {
 						CreatedOnToolsVersion = 26.4.1;
 						TestTargetID = AA0000010000000000000040;
 					};
@@ -236,6 +303,7 @@
 			targets = (
 				AA0000010000000000000040 /* AureliaWords */,
 				AA0000010000000000000041 /* AureliaWordsTests */,
+				AA0000010000000000000042 /* AureliaWordsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,6 +326,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0000010000000000000038 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -267,6 +342,11 @@
 			files = (
 				AA0000010000000000000001 /* AureliaWordsApp.swift in Sources */,
 				AA0000010000000000000002 /* AppView.swift in Sources */,
+				AA000001000000000000000F /* HomeView.swift in Sources */,
+				AA0000010000000000000012 /* SettingsView.swift in Sources */,
+				AA0000010000000000000013 /* HowToPlayView.swift in Sources */,
+				AA0000010000000000000014 /* AboutSupportView.swift in Sources */,
+				AA0000010000000000000015 /* AppMetadata.swift in Sources */,
 				AA0000010000000000000003 /* Theme.swift in Sources */,
 				AA0000010000000000000004 /* GameModels.swift in Sources */,
 				AA0000010000000000000005 /* GameEngine.swift in Sources */,
@@ -274,6 +354,7 @@
 				AA0000010000000000000007 /* GameView.swift in Sources */,
 				AA0000010000000000000008 /* PremiumKeyboard.swift in Sources */,
 				AA0000010000000000000009 /* PersistenceModels.swift in Sources */,
+				AA0000010000000000000016 /* AppSettingsStore.swift in Sources */,
 				AA000001000000000000000A /* StatsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +367,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0000010000000000000037 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0000010000000000000017 /* AureliaWordsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -293,6 +382,11 @@
 			isa = PBXTargetDependency;
 			target = AA0000010000000000000040 /* AureliaWords */;
 			targetProxy = AA0000010000000000000010 /* PBXContainerItemProxy */;
+		};
+		AA0000010000000000000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA0000010000000000000040 /* AureliaWords */;
+			targetProxy = AA0000010000000000000018 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -498,6 +592,42 @@
 			};
 			name = Release;
 		};
+		AA0000010000000000000096 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8DJ6A347N7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vishnugamini.AureliaWordsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = AureliaWords;
+			};
+			name = Debug;
+		};
+		AA0000010000000000000097 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8DJ6A347N7;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vishnugamini.AureliaWordsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = AureliaWords;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -524,6 +654,15 @@
 			buildConfigurations = (
 				AA0000010000000000000094 /* Debug */,
 				AA0000010000000000000095 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA0000010000000000000082 /* Build configuration list for PBXNativeTarget "AureliaWordsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0000010000000000000096 /* Debug */,
+				AA0000010000000000000097 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -2,15 +2,24 @@ import SwiftUI
 
 struct StatsView: View {
     let snapshot: StatsSnapshot
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
             AureliaTheme.background.ignoresSafeArea()
 
             VStack(alignment: .leading, spacing: 22) {
-                Text("The Ledger")
-                    .font(AureliaTheme.display(38, weight: .semibold))
-                    .foregroundStyle(AureliaTheme.parchment)
+                HStack(alignment: .top) {
+                    Text("The Ledger")
+                        .font(AureliaTheme.display(38, weight: .semibold))
+                        .foregroundStyle(AureliaTheme.parchment)
+
+                    Spacer()
+
+                    Button("Close") { dismiss() }
+                        .accessibilityIdentifier("stats.close")
+                        .buttonStyle(SecondaryPremiumButtonStyle())
+                }
 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     StatCard(title: "Played", value: "\(snapshot.played)")
@@ -26,6 +35,7 @@ struct StatsView: View {
                         .foregroundStyle(AureliaTheme.champagne)
 
                     ForEach(1...6, id: \.self) { attempt in
+                        let count = snapshot.guessDistribution[attempt, default: 0]
                         HStack {
                             Text("\(attempt)")
                                 .font(AureliaTheme.body(13, weight: .bold))
@@ -33,7 +43,6 @@ struct StatsView: View {
                                 .frame(width: 20)
 
                             GeometryReader { proxy in
-                                let count = snapshot.guessDistribution[attempt, default: 0]
                                 let maxCount = max(snapshot.guessDistribution.values.max() ?? 1, 1)
                                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                                     .fill(AureliaTheme.hero)
@@ -47,6 +56,9 @@ struct StatsView: View {
                             }
                             .frame(height: 22)
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Attempt \(attempt)")
+                        .accessibilityValue("\(count) wins")
                     }
                 }
                 .premiumCard()
@@ -72,5 +84,8 @@ private struct StatCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .premiumCard()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(value)
     }
 }

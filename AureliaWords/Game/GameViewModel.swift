@@ -7,8 +7,12 @@ import UIKit
 @Observable
 final class GameViewModel {
     private let context: ModelContext
-    private let store: BundleWordStore
+    private let store: any PuzzleProvider & WordValidator
     private let engine: GameEngine
+    @ObservationIgnored private let settings: AppSettingsStore
+    @ObservationIgnored private let lightFeedback = UIImpactFeedbackGenerator(style: .light)
+    @ObservationIgnored private let warningFeedback = UINotificationFeedbackGenerator()
+    @ObservationIgnored private let successFeedback = UINotificationFeedbackGenerator()
     private var storedGame: StoredGame?
     private(set) var session: GameSession
     private(set) var message: GameMessage = .idle
@@ -18,13 +22,21 @@ final class GameViewModel {
     var mode: PuzzleMode { session.mode }
     var isDailyComplete: Bool { session.mode == .daily && session.isComplete }
 
-    init(context: ModelContext, mode: PuzzleMode = .daily) {
+    init(
+        context: ModelContext,
+        mode: PuzzleMode = .daily,
+        settings: AppSettingsStore,
+        store: any PuzzleProvider & WordValidator = BundleWordStore()
+    ) {
         self.context = context
-        self.store = BundleWordStore()
+        self.settings = settings
+        self.store = store
         self.engine = GameEngine(validator: store)
-        let puzzle = store.puzzle(for: mode)
+        let puzzle = store.puzzle(for: mode, excluding: [])
         self.session = GameSession(id: puzzle.id, mode: mode, puzzleID: puzzle.id, answer: puzzle.answer, guesses: [], currentGuess: nilString, result: nil)
+        prepareFeedback()
         load(mode: mode)
+        refreshStats()
     }
 
     func switchMode(_ mode: PuzzleMode) {
@@ -47,6 +59,7 @@ final class GameViewModel {
 
     func submit() {
         let before = session.guesses.count
+        let wasComplete = session.isComplete
         let result = engine.submit(session.currentGuess, for: &session)
         message = result
 
@@ -56,7 +69,7 @@ final class GameViewModel {
         }
 
         updateKeyboard()
-        persistSession()
+        persistSession(refreshStats: !wasComplete && session.isComplete)
         if session.isComplete {
             successTap(won: session.result?.won == true)
         } else {
@@ -78,27 +91,34 @@ final class GameViewModel {
     }
 
     private func load(mode: PuzzleMode, forceNew: Bool = false) {
-        let recent = recentPracticeAnswers()
-        let puzzle = store.puzzle(for: mode, excluding: recent)
-
-        if !forceNew, let record = fetchStoredGame(mode: mode, puzzleID: puzzle.id) {
+        if !forceNew, let record = fetchStoredGame(mode: mode) {
             storedGame = record
             session = makeSession(from: record)
         } else {
+            let excludedAnswers = mode == .practice ? recentPracticeAnswers() : []
+            let puzzle = store.puzzle(for: mode, excluding: excludedAnswers)
             storedGame = nil
             session = GameSession(id: puzzle.id, mode: mode, puzzleID: puzzle.id, answer: puzzle.answer, guesses: [], currentGuess: "", result: nil)
             persistSession()
         }
 
         updateKeyboard()
-        refreshStats()
     }
 
-    private func fetchStoredGame(mode: PuzzleMode, puzzleID: String) -> StoredGame? {
-        let id = mode == .daily ? puzzleID : ""
-        if mode == .practice { return nil }
-        let descriptor = FetchDescriptor<StoredGame>(predicate: #Predicate { $0.id == id })
-        return try? context.fetch(descriptor).first
+    private func fetchStoredGame(mode: PuzzleMode) -> StoredGame? {
+        switch mode {
+        case .daily:
+            let dailyID = store.puzzle(for: .daily, excluding: []).id
+            let descriptor = FetchDescriptor<StoredGame>(predicate: #Predicate { $0.id == dailyID })
+            return try? context.fetch(descriptor).first
+        case .practice:
+            let practiceRaw = PuzzleMode.practice.rawValue
+            let descriptor = FetchDescriptor<StoredGame>(
+                predicate: #Predicate { $0.modeRaw == practiceRaw && $0.completed == false },
+                sortBy: [SortDescriptor(\.createdAt, order: .reverse)]
+            )
+            return try? context.fetch(descriptor).first
+        }
     }
 
     private func makeSession(from record: StoredGame) -> GameSession {
@@ -107,7 +127,7 @@ final class GameViewModel {
         return GameSession(id: record.id, mode: record.mode, puzzleID: record.puzzleID, answer: record.answer, guesses: guesses, currentGuess: "", result: result)
     }
 
-    private func persistSession() {
+    private func persistSession(refreshStats: Bool = false) {
         let guesses = session.guesses.map(\.guess)
         let record = storedGame ?? StoredGame(id: session.mode == .daily ? session.puzzleID : session.id, mode: session.mode, puzzleID: session.puzzleID, answer: session.answer)
         record.guesses = guesses
@@ -120,7 +140,9 @@ final class GameViewModel {
             storedGame = record
         }
         try? context.save()
-        refreshStats()
+        if refreshStats {
+            self.refreshStats()
+        }
     }
 
     private func updateKeyboard() {
@@ -143,15 +165,27 @@ final class GameViewModel {
     }
 
     private func lightTap() {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+        guard settings.hapticsEnabled else { return }
+        lightFeedback.impactOccurred()
+        lightFeedback.prepare()
     }
 
     private func warningTap() {
-        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        guard settings.hapticsEnabled else { return }
+        warningFeedback.notificationOccurred(.warning)
+        warningFeedback.prepare()
     }
 
     private func successTap(won: Bool) {
-        UINotificationFeedbackGenerator().notificationOccurred(won ? .success : .error)
+        guard settings.hapticsEnabled else { return }
+        successFeedback.notificationOccurred(won ? .success : .error)
+        successFeedback.prepare()
+    }
+
+    private func prepareFeedback() {
+        lightFeedback.prepare()
+        warningFeedback.prepare()
+        successFeedback.prepare()
     }
 }
 

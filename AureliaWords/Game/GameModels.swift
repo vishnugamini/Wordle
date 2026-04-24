@@ -29,12 +29,36 @@ enum LetterState: String, Codable, Comparable {
         }
     }
 
-    var color: Color {
+    func color(colorBlindMode: Bool = false) -> Color {
         switch self {
         case .unknown: AureliaTheme.panel
         case .absent: AureliaTheme.slate
-        case .present: AureliaTheme.champagne
-        case .correct: AureliaTheme.emerald
+        case .present: colorBlindMode ? AureliaTheme.apricot : AureliaTheme.champagne
+        case .correct: colorBlindMode ? AureliaTheme.cobalt : AureliaTheme.emerald
+        }
+    }
+
+    func gradientColors(colorBlindMode: Bool) -> [Color]? {
+        switch self {
+        case .present:
+            return colorBlindMode ? [AureliaTheme.apricot, AureliaTheme.copper] : [AureliaTheme.champagne, AureliaTheme.bronze]
+        case .correct:
+            return colorBlindMode ? [AureliaTheme.sky, AureliaTheme.cobalt] : [AureliaTheme.mint, AureliaTheme.emerald]
+        default:
+            return nil
+        }
+    }
+
+    var accessibilityDescription: String {
+        switch self {
+        case .unknown:
+            return "Unrevealed"
+        case .absent:
+            return "Not in the word"
+        case .present:
+            return "In the word, wrong spot"
+        case .correct:
+            return "Correct"
         }
     }
 }
@@ -43,6 +67,10 @@ struct TileState: Identifiable, Equatable {
     let id = UUID()
     var letter: Character?
     var state: LetterState
+
+    static func == (lhs: TileState, rhs: TileState) -> Bool {
+        lhs.letter == rhs.letter && lhs.state == rhs.state
+    }
 }
 
 struct GuessEvaluation: Equatable {
@@ -104,9 +132,9 @@ enum GameMessage: Equatable {
     var text: String {
         switch self {
         case .idle: ""
-        case .notEnoughLetters: "Five letters, darling."
+        case .notEnoughLetters: "Enter five letters."
         case .invalidWord: "That word is not in the collection."
-        case .alreadyComplete: "This round is already sealed."
+        case .alreadyComplete: "This round is already complete."
         }
     }
 }
