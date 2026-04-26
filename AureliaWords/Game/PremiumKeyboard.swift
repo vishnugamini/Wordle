@@ -2,7 +2,9 @@ import SwiftUI
 
 struct PremiumKeyboard: View {
     let states: [Character: LetterState]
+    var removedLetters: Set<Character> = []
     var colorBlindMode: Bool = false
+    var simplifiedAppearance: Bool = false
     var keyHeight: CGFloat = 52
     var rowSpacing: CGFloat = 9
     var keySpacing: CGFloat = 6
@@ -28,7 +30,7 @@ struct PremiumKeyboard: View {
                     }
 
                     ForEach(Array(row), id: \.self) { letter in
-                        key(String(letter), state: states[letter] ?? .unknown) {
+                        key(String(letter), state: states[letter] ?? .unknown, isRemoved: removedLetters.contains(letter)) {
                             onLetter(letter)
                         }
                     }
@@ -49,19 +51,23 @@ struct PremiumKeyboard: View {
         .padding(.vertical, 6)
     }
 
-    private func key(_ title: String, state: LetterState, action: @escaping () -> Void) -> some View {
+    private func key(_ title: String, state: LetterState, isRemoved: Bool, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(title)
                 .font(AureliaTheme.body(keyFontSize, weight: .bold))
-                .foregroundStyle(state == .unknown ? AureliaTheme.parchment : .white)
-                .shadow(color: .black.opacity(state == .unknown ? 0 : 0.22), radius: state == .unknown ? 0 : 2, y: 1)
+                .foregroundStyle(isRemoved || state != .unknown ? .white : AureliaTheme.unknownKeyText)
+                .shadow(
+                    color: .black.opacity(simplifiedAppearance || (!isRemoved && state == .unknown) ? 0 : 0.22),
+                    radius: simplifiedAppearance || (!isRemoved && state == .unknown) ? 0 : 2,
+                    y: simplifiedAppearance ? 0 : 1
+                )
                 .frame(maxWidth: .infinity)
                 .frame(height: keyHeight)
                 .background {
-                    keyBackground(state)
+                    keyBackground(state, isRemoved: isRemoved)
                 }
                 .overlay(alignment: .topLeading) {
-                    if state != .unknown {
+                    if (isRemoved || state != .unknown) && !simplifiedAppearance {
                         RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous)
                             .fill(
                                 LinearGradient(
@@ -72,13 +78,19 @@ struct PremiumKeyboard: View {
                             )
                     }
                 }
-                .overlay(RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous).stroke(.white.opacity(state == .unknown ? 0.13 : 0.24), lineWidth: 1))
-                .shadow(color: keyShadow(state), radius: state == .unknown ? 0 : 7, x: 0, y: state == .unknown ? 0 : 5)
+                .overlay(RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous).stroke(.white.opacity(isRemoved || state != .unknown ? 0.24 : 0.13), lineWidth: 1))
+                .shadow(
+                    color: simplifiedAppearance ? .clear : keyShadow(state, isRemoved: isRemoved),
+                    radius: simplifiedAppearance || (!isRemoved && state == .unknown) ? 0 : 7,
+                    x: 0,
+                    y: simplifiedAppearance || (!isRemoved && state == .unknown) ? 0 : 5
+                )
         }
         .accessibilityIdentifier("keyboard.key.\(title)")
         .accessibilityLabel(title)
-        .accessibilityValue(state.accessibilityDescription)
-        .accessibilityHint("Adds \(title) to the current guess")
+        .accessibilityValue(isRemoved ? "Removed wrong letter" : state.accessibilityDescription)
+        .accessibilityHint(isRemoved ? "This wrong letter has been removed" : "Adds \(title) to the current guess")
+        .disabled(isRemoved)
         .buttonStyle(PremiumKeyButtonStyle())
     }
 
@@ -92,21 +104,23 @@ struct PremiumKeyboard: View {
         Button(action: action) {
             Text(title)
                 .font(AureliaTheme.body(max(11, keyFontSize - 2), weight: .bold))
-                .foregroundStyle(AureliaTheme.ink)
+                .foregroundStyle(AureliaTheme.actionText)
                 .frame(width: width, height: keyHeight)
                 .background(AureliaTheme.hero, in: RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous))
                 .overlay(alignment: .topLeading) {
-                    RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.white.opacity(0.38), .clear],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                    if !simplifiedAppearance {
+                        RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [.white.opacity(0.38), .clear],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
+                    }
                 }
                 .overlay(RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous).stroke(.white.opacity(0.2), lineWidth: 1))
-                .shadow(color: AureliaTheme.champagne.opacity(0.2), radius: 8, x: 0, y: 5)
+                .shadow(color: simplifiedAppearance ? .clear : AureliaTheme.champagne.opacity(0.2), radius: simplifiedAppearance ? 0 : 8, x: 0, y: simplifiedAppearance ? 0 : 5)
         }
         .accessibilityIdentifier(identifier)
         .accessibilityLabel(accessibilityLabel)
@@ -126,42 +140,63 @@ struct PremiumKeyboard: View {
     }
 
     @ViewBuilder
-    private func keyBackground(_ state: LetterState) -> some View {
+    private func keyBackground(_ state: LetterState, isRemoved: Bool) -> some View {
         let shape = RoundedRectangle(cornerRadius: keyCornerRadius, style: .continuous)
 
-        switch state {
-        case .unknown:
-            shape
-                .fill(AureliaTheme.panelDeep.opacity(0.78))
-        case .absent:
+        if isRemoved {
             shape
                 .fill(
                     LinearGradient(
-                        colors: [
-                            Color(red: 0.58, green: 0.19, blue: 0.22),
-                            Color(red: 0.46, green: 0.13, blue: 0.16),
-                            Color(red: 0.24, green: 0.07, blue: 0.09)
-                        ],
+                        colors: [AureliaTheme.cobalt, AureliaTheme.slate, AureliaTheme.charcoal],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
                 .overlay {
-                    shape
-                        .fill(
-                            RadialGradient(
-                                colors: [.white.opacity(0.10), .clear],
-                                center: .topLeading,
-                                startRadius: 2,
-                                endRadius: keyHeight * 0.9
+                    if !simplifiedAppearance {
+                        shape
+                            .fill(
+                                RadialGradient(
+                                    colors: [.white.opacity(0.14), .clear],
+                                    center: .topLeading,
+                                    startRadius: 2,
+                                    endRadius: keyHeight * 0.9
+                                )
                             )
-                        )
+                    }
+                }
+        } else {
+            switch state {
+        case .unknown:
+            shape
+                .fill(AureliaTheme.unknownKeyFill.opacity(simplifiedAppearance ? 0.92 : 1))
+        case .absent:
+            shape
+                .fill(
+                    LinearGradient(
+                        colors: AureliaTheme.absentKeyGradient,
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .overlay {
+                    if !simplifiedAppearance {
+                        shape
+                            .fill(
+                                RadialGradient(
+                                    colors: [.white.opacity(0.10), .clear],
+                                    center: .topLeading,
+                                    startRadius: 2,
+                                    endRadius: keyHeight * 0.9
+                                )
+                            )
+                    }
                 }
         case .present:
             shape
                 .fill(
                     LinearGradient(
-                        colors: state.gradientColors(colorBlindMode: colorBlindMode) ?? [AureliaTheme.champagne, AureliaTheme.bronze],
+                        colors: state.gradientColors(colorBlindMode: colorBlindMode) ?? AureliaTheme.presentGradient(colorBlindMode: colorBlindMode),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -170,15 +205,20 @@ struct PremiumKeyboard: View {
             shape
                 .fill(
                     LinearGradient(
-                        colors: state.gradientColors(colorBlindMode: colorBlindMode) ?? [AureliaTheme.mint, AureliaTheme.emerald],
+                        colors: state.gradientColors(colorBlindMode: colorBlindMode) ?? AureliaTheme.correctGradient(colorBlindMode: colorBlindMode),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
+            }
         }
     }
 
-    private func keyShadow(_ state: LetterState) -> Color {
+    private func keyShadow(_ state: LetterState, isRemoved: Bool) -> Color {
+        if isRemoved {
+            return AureliaTheme.cobalt.opacity(0.22)
+        }
+
         switch state {
         case .unknown:
             return .clear
@@ -193,12 +233,12 @@ struct PremiumKeyboard: View {
 }
 
 private struct PremiumKeyButtonStyle: ButtonStyle {
-    var pressedScale: CGFloat = 0.96
+    var pressedScale: CGFloat = 0.975
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .scaleEffect(configuration.isPressed ? pressedScale : 1)
-            .brightness(configuration.isPressed ? 0.04 : 0)
-            .animation(.spring(response: 0.24, dampingFraction: 0.7), value: configuration.isPressed)
+            .opacity(configuration.isPressed ? 0.92 : 1)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
     }
 }

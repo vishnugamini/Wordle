@@ -13,11 +13,15 @@ final class AureliaWordsUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["home.play"].waitForExistence(timeout: 5))
 
-        app.buttons["home.settings"].tap()
+        let settingsButton = app.buttons["home.settings"]
+        scrollToElement(settingsButton, in: app)
+        settingsButton.tap()
         XCTAssertTrue(app.switches["settings.haptics"].waitForExistence(timeout: 2))
         app.buttons["settings.close"].tap()
 
-        app.buttons["home.about"].tap()
+        let aboutButton = app.buttons["home.about"]
+        scrollToElement(aboutButton, in: app)
+        aboutButton.tap()
         XCTAssertTrue(app.buttons["about.close"].waitForExistence(timeout: 2))
         app.buttons["about.close"].tap()
     }
@@ -28,7 +32,9 @@ final class AureliaWordsUITests: XCTestCase {
 
         dismissHowToPlayIfNeeded(in: app)
 
-        app.buttons["home.howToPlay"].tap()
+        let howToPlayButton = app.buttons["home.howToPlay"]
+        scrollToElement(howToPlayButton, in: app)
+        howToPlayButton.tap()
         XCTAssertTrue(app.buttons["help.close"].waitForExistence(timeout: 2))
         app.buttons["help.close"].tap()
 
@@ -67,6 +73,17 @@ final class AureliaWordsUITests: XCTestCase {
     private func type(word: String, in app: XCUIApplication) {
         for letter in word {
             app.buttons["keyboard.key.\(letter)"].tap()
+        }
+    }
+
+    private func scrollToElement(_ element: XCUIElement, in app: XCUIApplication, maxSwipes: Int = 4) {
+        guard !element.exists else { return }
+
+        let scrollView = app.scrollViews.firstMatch
+        guard scrollView.waitForExistence(timeout: 2) else { return }
+
+        for _ in 0..<maxSwipes where !element.exists {
+            scrollView.swipeUp()
         }
     }
 }

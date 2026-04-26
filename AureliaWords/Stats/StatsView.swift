@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct StatsView: View {
+    let mode: PuzzleMode
     let snapshot: StatsSnapshot
     @Environment(\.dismiss) private var dismiss
 
@@ -10,9 +11,15 @@ struct StatsView: View {
 
             VStack(alignment: .leading, spacing: 22) {
                 HStack(alignment: .top) {
-                    Text("The Ledger")
-                        .font(AureliaTheme.display(38, weight: .semibold))
-                        .foregroundStyle(AureliaTheme.parchment)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(mode.title) Ledger")
+                            .font(AureliaTheme.display(38, weight: .semibold))
+                            .foregroundStyle(AureliaTheme.parchment)
+
+                        Text(statsSubtitle)
+                            .font(AureliaTheme.body(13, weight: .semibold))
+                            .foregroundStyle(AureliaTheme.champagne.opacity(0.85))
+                    }
 
                     Spacer()
 
@@ -24,8 +31,8 @@ struct StatsView: View {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     StatCard(title: "Played", value: "\(snapshot.played)")
                     StatCard(title: "Win Rate", value: "\(snapshot.winRate)%")
-                    StatCard(title: "Streak", value: "\(snapshot.currentStreak)")
-                    StatCard(title: "Best", value: "\(snapshot.bestStreak)")
+                    StatCard(title: mode == .daily ? "Streak" : "Wins", value: mode == .daily ? "\(snapshot.currentStreak)" : "\(snapshot.wins)")
+                    StatCard(title: "Best", value: mode == .daily ? "\(snapshot.bestStreak)" : "\(snapshot.guessDistribution.keys.max() ?? 0)")
                 }
 
                 VStack(alignment: .leading, spacing: 12) {
@@ -61,9 +68,23 @@ struct StatsView: View {
                         .accessibilityValue("\(count) wins")
                     }
                 }
-                .premiumCard()
+                .sheetCard()
             }
             .padding(24)
+        }
+        .presentationBackground(AureliaTheme.sheetBackground)
+        .presentationCornerRadius(34)
+        .presentationDragIndicator(.visible)
+    }
+
+    private var statsSubtitle: String {
+        switch mode {
+        case .daily:
+            return "Daily puzzle results only"
+        case .practice:
+            return "Practice round results only"
+        case .reverse:
+            return "Reverse reconstruction results only"
         }
     }
 }
@@ -80,10 +101,10 @@ private struct StatCard: View {
             Text(title.uppercased())
                 .font(AureliaTheme.body(11, weight: .bold))
                 .tracking(1.4)
-                .foregroundStyle(.white.opacity(0.66))
+                .foregroundStyle(AureliaTheme.tertiaryText.opacity(0.76))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .premiumCard()
+        .sheetCard()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
         .accessibilityValue(value)

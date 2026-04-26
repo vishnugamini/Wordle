@@ -13,7 +13,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 18) {
                         Text("Tune the experience for accessibility, comfort, and launch-ready polish.")
                             .font(AureliaTheme.body(15, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.72))
+                            .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
 
                         VStack(spacing: 14) {
                             toggleCard(
@@ -51,12 +51,12 @@ struct SettingsView: View {
                                 .foregroundStyle(AureliaTheme.parchment)
                             Text(AppMetadata.subtitle)
                                 .font(AureliaTheme.body(15, weight: .semibold))
-                                .foregroundStyle(.white.opacity(0.78))
+                                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.84))
                             Text(AppMetadata.keywords)
                                 .font(AureliaTheme.body(13))
-                                .foregroundStyle(.white.opacity(0.64))
+                                .foregroundStyle(AureliaTheme.tertiaryText.opacity(0.76))
                         }
-                        .premiumCard()
+                        .sheetCard()
                     }
                     .padding(24)
                 }
@@ -70,6 +70,9 @@ struct SettingsView: View {
                 }
             }
         }
+        .presentationBackground(AureliaTheme.sheetBackground)
+        .presentationCornerRadius(34)
+        .presentationDragIndicator(.visible)
     }
 
     private var palettePreview: some View {
@@ -85,7 +88,7 @@ struct SettingsView: View {
                 legendTile(title: "Correct", state: .correct)
             }
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private func toggleCard(
@@ -105,9 +108,9 @@ struct SettingsView: View {
 
             Text(description)
                 .font(AureliaTheme.body(13))
-                .foregroundStyle(.white.opacity(0.68))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private func legendTile(title: String, state: LetterState) -> some View {

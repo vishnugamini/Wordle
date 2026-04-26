@@ -16,6 +16,9 @@
 		AA0000010000000000000015 /* AppMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000113 /* AppMetadata.swift */; };
 		AA0000010000000000000016 /* AppSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000114 /* AppSettingsStore.swift */; };
 		AA0000010000000000000017 /* AureliaWordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000115 /* AureliaWordsUITests.swift */; };
+		AA000001000000000000001B /* StoreModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000116 /* StoreModels.swift */; };
+		AA000001000000000000001C /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000117 /* StoreView.swift */; };
+		AA000001000000000000001D /* WordServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000118 /* WordServices.swift */; };
 		AA0000010000000000000003 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000103 /* Theme.swift */; };
 		AA0000010000000000000004 /* GameModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000104 /* GameModels.swift */; };
 		AA0000010000000000000005 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000010000000000000105 /* GameEngine.swift */; };
@@ -57,6 +60,9 @@
 		AA0000010000000000000113 /* AppMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMetadata.swift; sourceTree = "<group>"; };
 		AA0000010000000000000114 /* AppSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsStore.swift; sourceTree = "<group>"; };
 		AA0000010000000000000115 /* AureliaWordsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AureliaWordsUITests.swift; sourceTree = "<group>"; };
+		AA0000010000000000000116 /* StoreModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreModels.swift; sourceTree = "<group>"; };
+		AA0000010000000000000117 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
+		AA0000010000000000000118 /* WordServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordServices.swift; sourceTree = "<group>"; };
 		AA0000010000000000000103 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		AA0000010000000000000104 /* GameModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModels.swift; sourceTree = "<group>"; };
 		AA0000010000000000000105 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 				AA0000010000000000000052 /* DesignSystem */,
 				AA0000010000000000000053 /* Game */,
 				AA0000010000000000000054 /* Persistence */,
+				AA0000010000000000000057 /* Store */,
 				AA0000010000000000000055 /* Stats */,
 				AA0000010000000000000056 /* WordLists */,
 				AA000001000000000000010D /* Assets.xcassets */,
@@ -153,6 +160,7 @@
 				AA0000010000000000000106 /* GameViewModel.swift */,
 				AA0000010000000000000107 /* GameView.swift */,
 				AA0000010000000000000108 /* PremiumKeyboard.swift */,
+				AA0000010000000000000118 /* WordServices.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -172,6 +180,15 @@
 				AA000001000000000000010A /* StatsView.swift */,
 			);
 			path = Stats;
+			sourceTree = "<group>";
+		};
+		AA0000010000000000000057 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				AA0000010000000000000116 /* StoreModels.swift */,
+				AA0000010000000000000117 /* StoreView.swift */,
+			);
+			path = Store;
 			sourceTree = "<group>";
 		};
 		AA0000010000000000000056 /* WordLists */ = {
@@ -355,6 +372,9 @@
 				AA0000010000000000000008 /* PremiumKeyboard.swift in Sources */,
 				AA0000010000000000000009 /* PersistenceModels.swift in Sources */,
 				AA0000010000000000000016 /* AppSettingsStore.swift in Sources */,
+				AA000001000000000000001B /* StoreModels.swift in Sources */,
+				AA000001000000000000001C /* StoreView.swift in Sources */,
+				AA000001000000000000001D /* WordServices.swift in Sources */,
 				AA000001000000000000000A /* StatsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

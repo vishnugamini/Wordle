@@ -27,6 +27,9 @@ struct AboutSupportView: View {
                 }
             }
         }
+        .presentationBackground(AureliaTheme.sheetBackground)
+        .presentationCornerRadius(34)
+        .presentationDragIndicator(.visible)
     }
 
     private var headerCard: some View {
@@ -37,13 +40,13 @@ struct AboutSupportView: View {
 
             Text(AppMetadata.descriptionOpening)
                 .font(AureliaTheme.body(14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
 
             Text("Version \(versionText)")
                 .font(AureliaTheme.body(12, weight: .semibold))
                 .foregroundStyle(AureliaTheme.champagne)
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var supportCard: some View {
@@ -58,9 +61,9 @@ struct AboutSupportView: View {
 
             Text(AppMetadata.supportEmail)
                 .font(AureliaTheme.body(13))
-                .foregroundStyle(.white.opacity(0.68))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var privacyCard: some View {
@@ -72,7 +75,7 @@ struct AboutSupportView: View {
 
             Text("Aurelia Words keeps gameplay local to the device and does not require an account.")
                 .font(AureliaTheme.body(14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
 
             Text("Privacy policy URL placeholder")
                 .font(AureliaTheme.body(12, weight: .bold))
@@ -80,10 +83,10 @@ struct AboutSupportView: View {
 
             Text(AppMetadata.privacyURLString)
                 .font(AureliaTheme.body(12))
-                .foregroundStyle(.white.opacity(0.66))
+                .foregroundStyle(AureliaTheme.tertiaryText.opacity(0.76))
                 .textSelection(.enabled)
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var reviewCard: some View {
@@ -95,9 +98,9 @@ struct AboutSupportView: View {
 
             Text(AppMetadata.reviewNotes)
                 .font(AureliaTheme.body(14))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var supportEmailURL: URL {

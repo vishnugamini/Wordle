@@ -2,10 +2,13 @@ import SwiftUI
 
 struct HomeView: View {
     let selectedMode: PuzzleMode
-    let stats: StatsSnapshot
+    let stats: ModeStatsSnapshot
+    let coins: Int
     let onModeSelected: (PuzzleMode) -> Void
     let onPlay: () -> Void
     let onShowStats: () -> Void
+    let onOpenAchievements: () -> Void
+    let onOpenStore: () -> Void
     let onOpenSettings: () -> Void
     let onOpenHowToPlay: () -> Void
     let onOpenAbout: () -> Void
@@ -29,9 +32,7 @@ struct HomeView: View {
                     }
 
                     actionPanel
-
                     quickActionsPanel
-
                     statRibbon
                 }
                 .padding(.horizontal, 20)
@@ -100,34 +101,55 @@ struct HomeView: View {
 
                 Text(AppMetadata.descriptionOpening)
                     .font(AureliaTheme.body(16, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.74))
+                    .foregroundStyle(AureliaTheme.secondaryText.opacity(0.82))
                     .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 10) {
                     tag("Daily Word Puzzle")
                     tag("Unlimited Practice")
+                    tag("Reverse Chain")
                 }
             }
             .padding(24)
+
+            VStack {
+                HStack {
+                    Spacer()
+                    coinBalanceWidget
+                }
+                Spacer()
+            }
+            .padding(20)
         }
         .frame(height: 300)
         .shadow(color: .black.opacity(0.3), radius: 26, x: 0, y: 18)
     }
 
     private var statRibbon: some View {
-        HStack(spacing: 10) {
-            statPill(value: "\(stats.played)", title: "Played")
-            statPill(value: "\(stats.winRate)%", title: "Win Rate")
-            statPill(value: "\(stats.currentStreak)", title: "Streak")
+        let snapshot = stats[selectedMode]
+
+        return HStack(spacing: 10) {
+            statPill(value: "\(snapshot.played)", title: "Played")
+            statPill(value: "\(snapshot.winRate)%", title: "Win Rate")
+            statPill(
+                value: selectedMode == .daily ? "\(snapshot.currentStreak)" : "\(snapshot.wins)",
+                title: selectedMode == .daily ? "Streak" : "Wins"
+            )
 
             Button(action: onShowStats) {
-                Image(systemName: "chart.bar.xaxis")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(AureliaTheme.ink)
-                    .frame(width: 54, height: 70)
-                    .background(AureliaTheme.hero, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                VStack(spacing: 4) {
+                    Image(systemName: "chart.bar.xaxis")
+                        .font(.system(size: 18, weight: .bold))
+                    Text(selectedMode.title)
+                        .font(AureliaTheme.body(11, weight: .bold))
+                        .tracking(0.8)
+                }
+                .foregroundStyle(AureliaTheme.actionText)
+                .frame(width: 66, height: 70)
+                .background(AureliaTheme.hero, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
             .accessibilityIdentifier("home.stats")
+            .accessibilityLabel("\(selectedMode.title) statistics")
             .buttonStyle(.plain)
         }
     }
@@ -143,9 +165,9 @@ struct HomeView: View {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(isSelected ? AnyShapeStyle(AureliaTheme.hero) : AnyShapeStyle(.white.opacity(0.06)))
 
-                    Image(systemName: mode == .daily ? "sun.max.fill" : "sparkles")
+                    Image(systemName: iconName(for: mode))
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(isSelected ? AureliaTheme.ink : AureliaTheme.champagne)
+                        .foregroundStyle(isSelected ? AureliaTheme.actionText : AureliaTheme.champagne)
                 }
                 .frame(width: 62, height: 62)
 
@@ -161,7 +183,7 @@ struct HomeView: View {
                             Text("Selected")
                                 .font(AureliaTheme.body(11, weight: .bold))
                                 .tracking(1.3)
-                                .foregroundStyle(AureliaTheme.ink)
+                                .foregroundStyle(AureliaTheme.actionText)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 6)
                                 .background(AureliaTheme.hero, in: Capsule())
@@ -170,11 +192,11 @@ struct HomeView: View {
 
                     Text(mode.subtitle)
                         .font(AureliaTheme.body(14, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.72))
+                        .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
 
-                    Text(mode == .daily ? "A single curated puzzle for today." : "Jump into as many fresh rounds as you like.")
+                    Text(modeDescription(for: mode))
                         .font(AureliaTheme.body(12, weight: .semibold))
-                        .foregroundStyle(isSelected ? AureliaTheme.champagne : .white.opacity(0.54))
+                        .foregroundStyle(isSelected ? AureliaTheme.champagne : AureliaTheme.tertiaryText.opacity(0.72))
                 }
             }
             .padding(18)
@@ -194,17 +216,17 @@ struct HomeView: View {
 
     private var actionPanel: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(selectedMode == .daily ? "Play today’s featured word." : "Practice with unlimited fresh rounds.")
+            Text(actionTitle)
                 .font(AureliaTheme.display(28, weight: .semibold))
                 .foregroundStyle(AureliaTheme.parchment)
 
-            Text(selectedMode == .daily ? "A new daily word puzzle is ready every day." : "Practice mode keeps you guessing for as long as you want to play.")
+            Text(actionSubtitle)
                 .font(AureliaTheme.body(14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.68))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
 
             Button(action: onPlay) {
                 HStack {
-                    Text(selectedMode == .daily ? "Play Daily Puzzle" : "Start Practice Round")
+                    Text(playButtonTitle)
                         .font(AureliaTheme.body(16, weight: .heavy))
 
                     Spacer()
@@ -212,7 +234,7 @@ struct HomeView: View {
                     Image(systemName: "arrow.right")
                         .font(.system(size: 16, weight: .bold))
                 }
-                .foregroundStyle(AureliaTheme.ink)
+                .foregroundStyle(AureliaTheme.actionText)
                 .padding(.horizontal, 18)
                 .frame(height: 60)
                 .background(AureliaTheme.hero, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
@@ -233,6 +255,61 @@ struct HomeView: View {
         .premiumCard()
     }
 
+    private func iconName(for mode: PuzzleMode) -> String {
+        switch mode {
+        case .daily:
+            return "sun.max.fill"
+        case .practice:
+            return "sparkles"
+        case .reverse:
+            return "arrow.uturn.backward.circle.fill"
+        }
+    }
+
+    private func modeDescription(for mode: PuzzleMode) -> String {
+        switch mode {
+        case .daily:
+            return "A single curated puzzle for today."
+        case .practice:
+            return "Jump into as many fresh rounds as you like."
+        case .reverse:
+            return "Start from the answer and reconstruct the hidden ladder upward."
+        }
+    }
+
+    private var actionTitle: String {
+        switch selectedMode {
+        case .daily:
+            return "Play today’s featured word."
+        case .practice:
+            return "Practice with unlimited fresh rounds."
+        case .reverse:
+            return "Trace the hidden guesses in reverse."
+        }
+    }
+
+    private var actionSubtitle: String {
+        switch selectedMode {
+        case .daily:
+            return "A new daily word puzzle is ready every day."
+        case .practice:
+            return "Practice mode keeps you guessing for as long as you want to play."
+        case .reverse:
+            return "See the answer first, then solve the hidden chain one row at a time."
+        }
+    }
+
+    private var playButtonTitle: String {
+        switch selectedMode {
+        case .daily:
+            return "Play Daily Puzzle"
+        case .practice:
+            return "Start Practice Round"
+        case .reverse:
+            return "Start Reverse Round"
+        }
+    }
+
     private var quickActionsPanel: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("Ready for launch")
@@ -240,18 +317,36 @@ struct HomeView: View {
                 .tracking(1.2)
                 .foregroundStyle(AureliaTheme.champagne)
 
-            HStack(spacing: 10) {
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 10),
+                    GridItem(.flexible(), spacing: 10)
+                ],
+                spacing: 10
+            ) {
                 quickActionButton(
-                    title: "How to Play",
-                    systemImage: "questionmark.circle",
-                    identifier: "home.howToPlay",
-                    action: onOpenHowToPlay
+                    title: "Atelier",
+                    systemImage: "bag",
+                    identifier: "home.store",
+                    action: onOpenStore
+                )
+                quickActionButton(
+                    title: "Achievements",
+                    systemImage: "rosette",
+                    identifier: "home.achievements",
+                    action: onOpenAchievements
                 )
                 quickActionButton(
                     title: "Settings",
                     systemImage: "gearshape",
                     identifier: "home.settings",
                     action: onOpenSettings
+                )
+                quickActionButton(
+                    title: "How to Play",
+                    systemImage: "questionmark.circle",
+                    identifier: "home.howToPlay",
+                    action: onOpenHowToPlay
                 )
                 quickActionButton(
                     title: "About",
@@ -325,5 +420,47 @@ struct HomeView: View {
                 Capsule()
                     .stroke(.white.opacity(0.1), lineWidth: 1)
             )
+    }
+
+    private var coinBalanceWidget: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 1.0, green: 0.92, blue: 0.54),
+                                Color(red: 0.89, green: 0.64, blue: 0.12)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                Circle()
+                    .stroke(Color.white.opacity(0.35), lineWidth: 1)
+
+                Text("G")
+                    .font(AureliaTheme.body(12, weight: .heavy))
+                    .foregroundStyle(Color(red: 0.42, green: 0.25, blue: 0.02))
+            }
+            .frame(width: 26, height: 26)
+            .shadow(color: Color(red: 0.76, green: 0.54, blue: 0.08).opacity(0.38), radius: 8, x: 0, y: 4)
+
+            Text("\(coins)")
+                .font(AureliaTheme.body(15, weight: .heavy))
+                .foregroundStyle(AureliaTheme.parchment)
+                .monospacedDigit()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(AureliaTheme.coinCapsuleFill, in: Capsule())
+        .overlay(
+            Capsule()
+                .stroke(AureliaTheme.coinCapsuleStroke, lineWidth: 1)
+        )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Gold")
+        .accessibilityValue("\(coins)")
     }
 }

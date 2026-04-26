@@ -11,9 +11,9 @@ struct HowToPlayView: View {
 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 18) {
-                        Text("Guess the hidden five-letter word in six tries. After every guess, each tile tells you how close you are.")
+                        Text("Daily and Practice ask you to find the hidden five-letter word in six tries. Reverse gives you the answer first and asks you to rebuild the hidden path upward.")
                             .font(AureliaTheme.body(15, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.74))
+                            .foregroundStyle(AureliaTheme.secondaryText.opacity(0.82))
 
                         rulesCard
                         meaningsCard
@@ -31,6 +31,9 @@ struct HowToPlayView: View {
                 }
             }
         }
+        .presentationBackground(AureliaTheme.sheetBackground)
+        .presentationCornerRadius(34)
+        .presentationDragIndicator(.visible)
     }
 
     private var rulesCard: some View {
@@ -44,8 +47,9 @@ struct HowToPlayView: View {
             rule("Use the tile colors to refine your next guess.")
             rule("Daily gives you one featured puzzle each day.")
             rule("Practice lets you keep playing with unlimited local rounds.")
+            rule("Reverse shows the answer and color stack first, and each row only reveals when you find its exact hidden word.")
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var meaningsCard: some View {
@@ -59,7 +63,7 @@ struct HowToPlayView: View {
             meaningRow(letter: "R", state: .present, title: "Present", detail: "The letter is in the answer, but in a different position.")
             meaningRow(letter: "E", state: .correct, title: "Correct", detail: "The letter is in the answer and in the correct position.")
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private var modesCard: some View {
@@ -71,13 +75,17 @@ struct HowToPlayView: View {
 
             Text(AppMetadata.descriptionOpening)
                 .font(AureliaTheme.body(14, weight: .medium))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
 
             Text("Subtitle: \(AppMetadata.subtitle)")
                 .font(AureliaTheme.body(13, weight: .semibold))
                 .foregroundStyle(AureliaTheme.parchment)
+
+            Text("Reverse mode reveals the final answer on the last row and keeps the earlier words hidden behind their colors until you reconstruct them in reverse order.")
+                .font(AureliaTheme.body(13, weight: .medium))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
         }
-        .premiumCard()
+        .sheetCard()
     }
 
     private func rule(_ text: String) -> some View {
@@ -89,7 +97,7 @@ struct HowToPlayView: View {
 
             Text(text)
                 .font(AureliaTheme.body(14))
-                .foregroundStyle(.white.opacity(0.72))
+                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
         }
     }
 
@@ -110,7 +118,7 @@ struct HowToPlayView: View {
                     .foregroundStyle(AureliaTheme.parchment)
                 Text(detail)
                     .font(AureliaTheme.body(13))
-                    .foregroundStyle(.white.opacity(0.68))
+                    .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
             }
         }
     }
