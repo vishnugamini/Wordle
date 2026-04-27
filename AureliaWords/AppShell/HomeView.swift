@@ -5,7 +5,6 @@ struct HomeView: View {
     let stats: ModeStatsSnapshot
     let coins: Int
     let onModeSelected: (PuzzleMode) -> Void
-    let onPlay: () -> Void
     let onShowStats: () -> Void
     let onOpenAchievements: () -> Void
     let onOpenStore: () -> Void
@@ -31,7 +30,6 @@ struct HomeView: View {
                         }
                     }
 
-                    actionPanel
                     quickActionsPanel
                     statRibbon
                 }
@@ -160,7 +158,7 @@ struct HomeView: View {
         return Button {
             onModeSelected(mode)
         } label: {
-            HStack(alignment: .top, spacing: 16) {
+            HStack(alignment: .center, spacing: 16) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(isSelected ? AnyShapeStyle(AureliaTheme.hero) : AnyShapeStyle(.white.opacity(0.06)))
@@ -189,14 +187,6 @@ struct HomeView: View {
                                 .background(AureliaTheme.hero, in: Capsule())
                         }
                     }
-
-                    Text(mode.subtitle)
-                        .font(AureliaTheme.body(14, weight: .medium))
-                        .foregroundStyle(AureliaTheme.secondaryText.opacity(0.8))
-
-                    Text(modeDescription(for: mode))
-                        .font(AureliaTheme.body(12, weight: .semibold))
-                        .foregroundStyle(isSelected ? AureliaTheme.champagne : AureliaTheme.tertiaryText.opacity(0.72))
                 }
             }
             .padding(18)
@@ -214,99 +204,14 @@ struct HomeView: View {
         .buttonStyle(.plain)
     }
 
-    private var actionPanel: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(actionTitle)
-                .font(AureliaTheme.display(28, weight: .semibold))
-                .foregroundStyle(AureliaTheme.parchment)
-
-            Text(actionSubtitle)
-                .font(AureliaTheme.body(14, weight: .medium))
-                .foregroundStyle(AureliaTheme.secondaryText.opacity(0.78))
-
-            Button(action: onPlay) {
-                HStack {
-                    Text(playButtonTitle)
-                        .font(AureliaTheme.body(16, weight: .heavy))
-
-                    Spacer()
-
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 16, weight: .bold))
-                }
-                .foregroundStyle(AureliaTheme.actionText)
-                .padding(.horizontal, 18)
-                .frame(height: 60)
-                .background(AureliaTheme.hero, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .overlay(alignment: .topLeading) {
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.white.opacity(0.3), .clear],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                }
-            }
-            .accessibilityIdentifier("home.play")
-            .buttonStyle(.plain)
-        }
-        .premiumCard()
-    }
-
     private func iconName(for mode: PuzzleMode) -> String {
         switch mode {
         case .daily:
             return "sun.max.fill"
         case .practice:
-            return "sparkles"
+            return "infinity"
         case .reverse:
             return "arrow.uturn.backward.circle.fill"
-        }
-    }
-
-    private func modeDescription(for mode: PuzzleMode) -> String {
-        switch mode {
-        case .daily:
-            return "A single curated puzzle for today."
-        case .practice:
-            return "Jump into as many fresh rounds as you like."
-        case .reverse:
-            return "Start from the answer and reconstruct the hidden ladder upward."
-        }
-    }
-
-    private var actionTitle: String {
-        switch selectedMode {
-        case .daily:
-            return "Play today’s featured word."
-        case .practice:
-            return "Practice with unlimited fresh rounds."
-        case .reverse:
-            return "Trace the hidden guesses in reverse."
-        }
-    }
-
-    private var actionSubtitle: String {
-        switch selectedMode {
-        case .daily:
-            return "A new daily word puzzle is ready every day."
-        case .practice:
-            return "Practice mode keeps you guessing for as long as you want to play."
-        case .reverse:
-            return "See the answer first, then solve the hidden chain one row at a time."
-        }
-    }
-
-    private var playButtonTitle: String {
-        switch selectedMode {
-        case .daily:
-            return "Play Daily Puzzle"
-        case .practice:
-            return "Start Practice Round"
-        case .reverse:
-            return "Start Reverse Round"
         }
     }
 

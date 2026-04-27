@@ -11,7 +11,7 @@ final class AureliaWordsUITests: XCTestCase {
 
         dismissHowToPlayIfNeeded(in: app)
 
-        XCTAssertTrue(app.buttons["home.play"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["home.mode.daily"].waitForExistence(timeout: 5))
 
         let settingsButton = app.buttons["home.settings"]
         scrollToElement(settingsButton, in: app)
@@ -50,7 +50,6 @@ final class AureliaWordsUITests: XCTestCase {
         dismissHowToPlayIfNeeded(in: app)
 
         app.buttons["home.mode.practice"].tap()
-        app.buttons["home.play"].tap()
 
         XCTAssertTrue(app.buttons["keyboard.key.C"].waitForExistence(timeout: 5))
         type(word: "CRANE", in: app)

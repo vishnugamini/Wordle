@@ -44,10 +44,8 @@ struct AppView: View {
                                 coins: settingsStore.coins,
                                 onModeSelected: { mode in
                                     selectedMode = mode
-                                },
-                                onPlay: {
-                                    if viewModel.mode != selectedMode {
-                                        viewModel.switchMode(selectedMode)
+                                    if viewModel.mode != mode {
+                                        viewModel.switchMode(mode)
                                     }
                                     withAnimation(.spring(response: 0.45, dampingFraction: 0.9)) {
                                         screen = .game

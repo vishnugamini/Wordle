@@ -18,16 +18,6 @@ enum PuzzleMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    var subtitle: String {
-        switch self {
-        case .daily:
-            "One new word each day"
-        case .practice:
-            "Unlimited atelier rounds"
-        case .reverse:
-            "Rebuild the hidden path"
-        }
-    }
 }
 
 enum LetterState: String, Codable, Comparable {
